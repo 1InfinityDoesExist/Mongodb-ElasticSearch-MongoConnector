@@ -1,0 +1,43 @@
+Payload
+Case 1:
+{
+    "query":"gs",
+    "indices": [
+        "customer"
+    ],
+    "fields":{
+        "customer":[
+            "firstName",
+            "email"
+        ]
+    }
+}
+
+Search "gs" in index "customer" on mappings (fields) ["firstName", "email"]
+
+Case 2:
+{
+    "query":"gs",
+    "indices": [
+        "customer"
+    ],
+    "fields":{
+        "customer":[
+            
+        ]
+    }
+}
+Search "gs" in index "customer" on mappings (fields) [all the fields]
+
+
+Case 3:
+{
+    "query":"gs",
+    "indices": [
+        "customer"
+    ]
+}
+Search "gs" in index "customer" on mappings (fields) [all the fields]
+
+
+Note : Multiple Indices allowed
