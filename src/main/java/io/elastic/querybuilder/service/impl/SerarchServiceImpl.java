@@ -108,14 +108,14 @@ public class SerarchServiceImpl implements SearchService {
 			throws ElasticsearchParseException, IOException, ParseException {
 		log.info("----Create QueryBuilder");
 		QueryBuilder queryBuilder = QueryBuilders.boolQuery().must(QueryBuilders.typeQuery("instance"))
-				.must(QueryBuilders.multiMatchQuery(keyword, "*"));
+				.must(QueryBuilders.queryStringQuery(String.format("*%s*", keyword)));
 		log.info("----Query : {}", queryBuilder);
 		return queryBuilder;
 	}
 
-	private List<String> getAllMappings(String index) throws IOException, ElasticsearchParseException, ParseException {
+	// method to get all the mapping using esClient
+	public List<String> getAllMappings(String index) throws IOException, ElasticsearchParseException, ParseException {
 		log.info("----Retrieving all the mapping data. for index : {}", index);
-		index = "t_" + index + "_t";
 		List<String> att = new ArrayList<>();
 		GetMappingsRequest request = new GetMappingsRequest();
 		request.indices(index);
@@ -126,8 +126,8 @@ public class SerarchServiceImpl implements SearchService {
 				.parse(new ObjectMapper().writeValueAsString(syncMappingResponse.mappings().get(index).sourceAsMap())))
 						.get("properties");
 		log.info("-----Object : {}", entityJsonObject);
-		JSONObject props = (JSONObject) ((JSONObject) entityJsonObject.get("entity")).get("properties");
-		for (Object obj : props.keySet()) {
+
+		for (Object obj : entityJsonObject.keySet()) {
 			String prop = (String) obj;
 			log.info("---Prop : {}", prop);
 			att.add(prop);

@@ -1,3 +1,4 @@
+
 package io.elastic.querybuilder;
 
 import org.springframework.boot.SpringApplication;
