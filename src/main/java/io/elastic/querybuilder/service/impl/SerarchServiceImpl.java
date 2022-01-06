@@ -31,6 +31,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -70,7 +71,7 @@ public class SerarchServiceImpl implements SearchService {
 		List<String> indices = request.getIndices(); // list of indices in which you want to search
 		BoolQueryBuilder searchQuery = QueryBuilders.boolQuery();
 		for (String index : indices) {
-			searchQuery.should(getSearchQuery(index, query));
+			searchQuery.should(getSearchQuery(index, query, request));
 		}
 		log.info("-----Final Query : {}", searchQuery);
 
@@ -104,11 +105,22 @@ public class SerarchServiceImpl implements SearchService {
 
 	}
 
-	private QueryBuilder getSearchQuery(String index, String keyword)
+	private QueryBuilder getSearchQuery(String index, String keyword, SearchQueryRequest request)
 			throws ElasticsearchParseException, IOException, ParseException {
 		log.info("----Create QueryBuilder");
-		QueryBuilder queryBuilder = QueryBuilders.boolQuery().must(QueryBuilders.typeQuery("instance"))
-				.must(QueryBuilders.queryStringQuery(String.format("*%s*", keyword)));
+		BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery().must(QueryBuilders.typeQuery("instance"));
+
+		if (CollectionUtils.isEmpty(request.getFields()) || CollectionUtils.isEmpty(request.getFields().get(index))) {
+			queryBuilder.must(QueryBuilders.queryStringQuery(String.format("*%s*", keyword)));
+		} else {
+			List<String> fields = request.getFields().get(index);
+			BoolQueryBuilder qbuilder = QueryBuilders.boolQuery();
+			for (String field : fields) {
+				qbuilder.should(QueryBuilders.queryStringQuery(String.format("*%s*", keyword)).field(field));
+			}
+			queryBuilder.must(qbuilder);
+		}
+
 		log.info("----Query : {}", queryBuilder);
 		return queryBuilder;
 	}
