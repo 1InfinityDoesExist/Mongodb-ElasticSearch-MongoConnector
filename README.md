@@ -1,15 +1,15 @@
-# _Mongodb-ElasticSearch-MongoConnector_
+# Read Instruction.txt File.....!!!!!
 ---
 install python3\
 install pip3
 
-then go to the path **/usr/local/bin**\
+Then go to the path **/usr/local/bin**\
 sudo pip3 install mongo-connector\
-and pip3 install elastic2-doc-manager\
-pip3 install -U elasticsearch\
+pip3 install elastic2-doc-manager\
+pip3 install -U elasticsearch
 
 sudo rm /var/lib/mongodb/mongod.lock\
-sudo service mongod start\
+sudo service mongod start
 
 
 # _Standalone to replicaset_
@@ -27,47 +27,12 @@ Config file : /etc/mongod.conf
 
  for documentation of all options, see:\
    http://docs.mongodb.org/manual/reference/configuration-options/
+
 ---
-#Where and how to store data.\
-storage:\
-  dbPath: /var/lib/mongodb\
-  journal:\
-    enabled: true\
-#engine:\
-#mmapv1:\
-#wiredTiger:
-
-#where to write logging data.\
-systemLog:\
-  destination: file\
-  logAppend: true\
-  path: /var/log/mongodb/mongod.log
-
-#network interfaces\
-net:\
-  port: _27017_\
-  bindIp: _127.0.0.1_
-
-
-#how the process runs\
-processManagement:\
-  timeZoneInfo: /usr/share/zoneinfo\
-#fork : true
-
-#security:\
-#keyFile: /opt/mongo/mongo-keyfile
-
-#operationProfiling:
 
 replication:\
    replSetName: rs0\
-#sharding:
 
-##Enterprise-Only Options:
-
-#auditLog:
-
-#snmp:\
 setParameter:\
    enableLocalhostAuthBypass: false
 
