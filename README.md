@@ -102,13 +102,13 @@ WantedBy=multi-user.target
 
 # Config File
 
-{
-	"mainAddress": "mongodb://localhost:27017/oauth?maxIdleTimeMS=0&socketTimeoutMS=0",
-	"oplogFile": "/var/log/gaian/mongo-connector/oauth/oauth-oplog.timestamp",
-	"noDump": false,
-	"batchSize": -1,
-	"verbosity": 1,
-	"continoueOnError": true,
+{\
+	"mainAddress": "mongodb://localhost:27017/oauth?maxIdleTimeMS=0&socketTimeoutMS=0",\
+	"oplogFile": "/var/log/gaian/mongo-connector/oauth/oauth-oplog.timestamp",\
+	"noDump": false,\
+	"batchSize": -1,\
+	"verbosity": 1,\
+	"continoueOnError": true,\
 
 	"logging": {
         	"type": "file",
